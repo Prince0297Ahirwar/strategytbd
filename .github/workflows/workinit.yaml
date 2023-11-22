@@ -37,7 +37,7 @@ jobs:
           done
 
           for path in "${!processed_paths[@]}"; do
-            echo "${path}"
+            echo "path: ${path}"
           done
 
           # Convert associative array keys to an indexed array to remove dups
@@ -65,7 +65,7 @@ jobs:
           done
           ls
           for output in ${output_array[@]}; do
-            echo ${output}
+            echo "ouput: ${output}"
             cat $output
           done
           

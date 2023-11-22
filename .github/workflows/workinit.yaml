@@ -21,6 +21,7 @@ jobs:
         uses: tj-actions/changed-files@v40
         with:
          files: 'cloudfunctions/**'
+         files_ignore: 'cloudfunctions/config/**'
          dir_names: "true"
       - name: get list of folders modified till depth 2
         id: changed-paths
@@ -54,10 +55,9 @@ jobs:
 
               if [[ -f "$config_file" ]]; then
 
-                  yq eval-all 'select(fileIndex == 1) * select(fileIndex == 0)' "$config_file" "./environments/cloudfunctions/$BRANCH_NAME.yaml" > ${function_name}_merged.yaml
+                   yq eval-all 'select(fileIndex == 1) * select(fileIndex == 0)' "$config_file" "./environments/cloudfunctions/$BRANCH_NAME.yaml" > ${function_name}_merged.yaml
                   
-                  else
-
+              else
                     echo "Configuration file $config_file does not exist."
                     
                     cat "./environments/cloudfunctions/$BRANCH_NAME.yaml" > ${function_name}_merged.yaml

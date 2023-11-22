@@ -1,0 +1,53 @@
+name: test cloud function deploy
+on: push
+
+jobs:
+  cloudfunctiondeploy:
+    runs-on: ubuntu-latest 
+    name: Test cloud function deploy
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Get changed files
+        id: changed-files
+        uses: tj-actions/changed-files@v40
+        with:
+         files: cloudfunctions
+         dir_names: "true"
+      - name: get list of folders modified till depth 2
+        id: changed-paths
+        run: |
+            for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
+
+            # Split the path and get only the first two parts
+            IFS='/' read -ra ADDR <<< "$file"
+            path_depth_2="${ADDR[0]}/${ADDR[1]}"
+
+
+            processed_paths["$path_depth_2"]=1
+
+            done
+
+            # Convert associative array keys to an indexed array to remove dups
+            processed_array=("${!processed_paths[@]}")
+            echo "changed_paths="${processed_array[@]}" >> GITHUB_OUTPUT
+        
+      - name: merge files
+        run: |
+            config_dir="cloudfunctions/config"
+
+            for path in ${{ steps.changed-paths.outputs.changed_paths }}; do
+            function_name=$(basename "$path")
+            config_file="${config_dir}/${function_name}.yaml"
+
+                if [[ -f "$config_file" ]]; then
+
+                    yq eval-all 'select(fileIndex == 1) * select(fileIndex == 0)' "$config_file" "$(environments/cloudfunctions/dev.yaml)" > merged.yaml
+                    
+                    else
+                    
+                    echo "Configuration file $config_file does not exist."
+                fi
+            done
+
+

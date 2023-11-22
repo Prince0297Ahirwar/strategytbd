@@ -16,6 +16,7 @@ jobs:
       - name: get list of folders modified till depth 2
         id: changed-paths
         run: |   
+          ls -l
           declare -A processed_paths
           IFS=' ' read -ra files <<< "${{ steps.changed-files.outputs.all_changed_files }}"
           for file in "${files[@]}"; do
@@ -29,7 +30,7 @@ jobs:
           for path in "${!processed_paths[@]}"; do
             echo "${path}"
           done
-          
+
           # Convert associative array keys to an indexed array to remove dups
           processed_array=("${!processed_paths[@]}")
 

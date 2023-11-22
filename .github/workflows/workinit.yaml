@@ -16,27 +16,28 @@ jobs:
          dir_names: "true"
       - name: get list of folders modified till depth 2
         id: changed-paths
-        run: |
-            for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
-
-            # Split the path and get only the first two parts
+        run: |   
+          declare -A processed_paths
+          IFS=' ' read -ra files <<< "${{ steps.changed-files.outputs.all_changed_files }}"
+          for file in "${files[@]}"; do
             IFS='/' read -ra ADDR <<< "$file"
-            path_depth_2="${ADDR[0]}/${ADDR[1]}"
+            if [ "${#ADDR[@]}" -gt 1 ]; then
+              path_depth_2="${ADDR[0]}/${ADDR[1]}"
+              processed_paths["$path_depth_2"]=1
+            fi
+          done
+          for path in "${!processed_paths[@]}"; do
+            echo "${path}"
+          done | jq -R . | jq -cs . > paths.json
+          echo "changed_paths=$(jq -j . paths.json)" >> $GITHUB_ENV
 
-
-            processed_paths["$path_depth_2"]=1
-
-            done
-
-            # Convert associative array keys to an indexed array to remove dups
-            processed_array=("${!processed_paths[@]}")
-            echo "changed_paths="${processed_array[@]}" >> $GITHUB_OUTPUT
-        
       - name: merge files
         run: |
             config_dir="cloudfunctions/config"
 
-            for path in ${{ steps.changed-paths.outputs.changed_paths }}; do
+            paths=$(echo $changed_paths | jq -r '.[]')
+
+            for path in $paths; do
 
             function_name=$(basename "$path")
 

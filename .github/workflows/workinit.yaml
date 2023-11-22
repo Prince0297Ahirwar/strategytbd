@@ -48,7 +48,7 @@ jobs:
           for path in ${processed_array[@]}; do
 
           function_name=$(basename "$path")
-
+          output_array=()
           config_file="${config_dir}/${function_name}.yaml"
 
               if [[ -f "$config_file" ]]; then
@@ -61,9 +61,12 @@ jobs:
                     
                     cat "./environments/cloudfunctions/$BRANCH_NAME.yaml" > ${function_name}_merged.yaml
               fi
-              cat ${function_name}_merged.yaml
+              output_array+=(${function_name}_merged.yaml)
           done
           ls
+          for output in ${output_array[@]}; do
+            cat output
+          done
           
 
 

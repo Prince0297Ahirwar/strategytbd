@@ -25,31 +25,29 @@ jobs:
               processed_paths["$path_depth_2"]=1
             fi
           done
+
           for path in "${!processed_paths[@]}"; do
             echo "${path}"
-          done | jq -R . | jq -cs . > paths.json
-          echo "changed_paths=$(jq -j . paths.json)" >> $GITHUB_ENV
 
-      - name: merge files
-        run: |
-            config_dir="cloudfunctions/config"
+          # Convert associative array keys to an indexed array to remove dups
+          processed_array=("${!processed_paths[@]}")
 
-            paths=$(echo $changed_paths | jq -r '.[]')
+          config_dir="cloudfunctions/config"
 
-            for path in $paths; do
+          for path in ${processed_array[@]}; do
 
-            function_name=$(basename "$path")
+          function_name=$(basename "$path")
 
-            config_file="${config_dir}/${function_name}.yaml"
+          config_file="${config_dir}/${function_name}.yaml"
 
-                if [[ -f "$config_file" ]]; then
+              if [[ -f "$config_file" ]]; then
 
-                    yq eval-all 'select(fileIndex == 1) * select(fileIndex == 0)' "$config_file" "$(environments/cloudfunctions/dev.yaml)" > merged.yaml
-                    
-                    else
+                  yq eval-all 'select(fileIndex == 1) * select(fileIndex == 0)' "$config_file" "$(environments/cloudfunctions/dev.yaml)" > merged.yaml
+                  
+                  else
 
-                    echo "Configuration file $config_file does not exist."
-                fi
-            done
+                  echo "Configuration file $config_file does not exist."
+              fi
+          done
 
 

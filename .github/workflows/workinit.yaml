@@ -30,7 +30,7 @@ jobs:
 
             # Convert associative array keys to an indexed array to remove dups
             processed_array=("${!processed_paths[@]}")
-            echo "changed_paths="${processed_array[@]}" >> GITHUB_OUTPUT
+            echo "changed_paths="${processed_array[@]}" >> $GITHUB_OUTPUT
         
       - name: merge files
         run: |
@@ -45,7 +45,7 @@ jobs:
                     yq eval-all 'select(fileIndex == 1) * select(fileIndex == 0)' "$config_file" "$(environments/cloudfunctions/dev.yaml)" > merged.yaml
                     
                     else
-                    
+
                     echo "Configuration file $config_file does not exist."
                 fi
             done

@@ -44,11 +44,12 @@ jobs:
           processed_array=("${!processed_paths[@]}")
 
           config_dir="cloudfunctions/config"
+          output_array=()
 
           for path in ${processed_array[@]}; do
 
           function_name=$(basename "$path")
-          output_array=()
+          
           config_file="${config_dir}/${function_name}.yaml"
 
               if [[ -f "$config_file" ]]; then

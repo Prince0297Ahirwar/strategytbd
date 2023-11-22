@@ -65,6 +65,7 @@ jobs:
           done
           ls
           for output in ${output_array[@]}; do
+            echo ${output}
             cat $output
           done
           

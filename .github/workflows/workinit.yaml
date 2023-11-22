@@ -12,7 +12,6 @@ jobs:
         id: changed-files
         uses: tj-actions/changed-files@v40
         with:
-         files: cloudfunctions
          dir_names: "true"
       - name: get list of folders modified till depth 2
         id: changed-paths

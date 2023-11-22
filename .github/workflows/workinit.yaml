@@ -28,7 +28,8 @@ jobs:
 
           for path in "${!processed_paths[@]}"; do
             echo "${path}"
-
+          done
+          
           # Convert associative array keys to an indexed array to remove dups
           processed_array=("${!processed_paths[@]}")
 

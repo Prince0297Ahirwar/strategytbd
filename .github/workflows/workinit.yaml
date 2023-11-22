@@ -37,7 +37,9 @@ jobs:
             config_dir="cloudfunctions/config"
 
             for path in ${{ steps.changed-paths.outputs.changed_paths }}; do
+
             function_name=$(basename "$path")
+
             config_file="${config_dir}/${function_name}.yaml"
 
                 if [[ -f "$config_file" ]]; then

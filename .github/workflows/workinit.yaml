@@ -48,7 +48,7 @@ jobs:
 
               if [[ -f "$config_file" ]]; then
 
-                  yq eval-all 'select(fileIndex == 1) * select(fileIndex == 0)' "$config_file" "./environments/cloudfunctions/dev.yaml" > merged.yaml
+                  yq eval-all 'select(fileIndex == 1) * select(fileIndex == 0)' "$config_file" "./environments/cloudfunctions/${{ github.base_ref }}.yaml" > merged.yaml
                   
                   else
 

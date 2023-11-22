@@ -10,6 +10,11 @@ jobs:
       id-token: 'write'
     steps:
       - uses: actions/checkout@v4
+
+      - name: Extract branch name
+        id: extract_branch
+        run: echo "BRANCH_NAME=$(echo ${GITHUB_REF#refs/heads/})" >> $GITHUB_ENV
+      
       
       - name: Get changed files
         id: changed-files
@@ -48,7 +53,7 @@ jobs:
 
               if [[ -f "$config_file" ]]; then
 
-                  yq eval-all 'select(fileIndex == 1) * select(fileIndex == 0)' "$config_file" "./environments/cloudfunctions/${{ github.base_ref }}.yaml" > merged.yaml
+                  yq eval-all 'select(fileIndex == 1) * select(fileIndex == 0)' "$config_file" "./environments/cloudfunctions/$BRANCH_NAME.yaml" > merged.yaml
                   
                   else
 

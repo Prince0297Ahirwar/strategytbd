@@ -1,5 +1,2 @@
 print("hellow rold")
 dafdfadjhjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj dafa
-khjfdhjkahkdafa dfdafahhjkhkjh
-jhhvhvhvhjvhv jkbjkbjhb
-bjhbhjb

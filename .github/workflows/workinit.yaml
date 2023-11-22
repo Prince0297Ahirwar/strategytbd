@@ -56,11 +56,14 @@ jobs:
                   yq eval-all 'select(fileIndex == 1) * select(fileIndex == 0)' "$config_file" "./environments/cloudfunctions/$BRANCH_NAME.yaml" > merged.yaml
                   
                   else
-
-                  echo "Configuration file $config_file does not exist."
+                  
+                    echo "Configuration file $config_file does not exist."
+                    
+                    cat "./environments/cloudfunctions/$BRANCH_NAME.yaml" > merged.yaml
               fi
+              cat merged.yaml
           done
           ls
-          cat merged.yaml
+          
 
 

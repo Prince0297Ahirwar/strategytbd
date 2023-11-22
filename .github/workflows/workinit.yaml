@@ -55,5 +55,7 @@ jobs:
                   echo "Configuration file $config_file does not exist."
               fi
           done
+          ls
+          cat merged.yaml
 
 

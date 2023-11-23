@@ -80,7 +80,7 @@ jobs:
           prefix: test
           masked: true
         env:
-          JSON_FILE: ${{ join(fromJson(env.json), ' ') }}
+          JSON_FILE: ${{ env.json[0] }}
 
         
       

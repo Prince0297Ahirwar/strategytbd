@@ -76,11 +76,11 @@ jobs:
 
       - name: print env variable
         run: |
-          echo "${json[0]}"
+          echo "${json}"
       - name: json to variable
         uses: rgarcia-phi/json-to-variables@v1.1.0
         with:
-          filename: $JSON_FILE
+          filename: '${JSON_FILE}'
           prefix: test
           masked: true
         env:

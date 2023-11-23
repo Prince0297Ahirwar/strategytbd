@@ -72,7 +72,7 @@ jobs:
             configFiles+=($json_file)
           done
           echo ${configFiles[@]}
-          echo "json=${configFiles[0]}" >> $GITHUB_ENV 
+          echo "json=(${configFiles[@]})" >> $GITHUB_ENV 
 
       - name: print env variable
         run: |

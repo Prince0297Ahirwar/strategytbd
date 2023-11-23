@@ -84,7 +84,7 @@ jobs:
           prefix: test
           masked: true
         env:
-          JSON_FILE: "${json}"
+          JSON_FILE: "${{ env.json }}"
 
         
       

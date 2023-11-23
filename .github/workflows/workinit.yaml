@@ -72,7 +72,7 @@ jobs:
             configFiles+=($json_file)
           done
           echo ${configFiles[@]}
-          echo "json=${configFiles[0]}" >> $GITHUB_ENV 
+          echo "json=(${configFiles[@]})" >> $GITHUB_ENV 
 
       - name: print env variable
         run: |
@@ -80,7 +80,7 @@ jobs:
       - name: json to variable
         uses: rgarcia-phi/json-to-variables@v1.1.0
         with:
-          filename: ${{ env.json }}
+          filename: ${{ env.json[0] }}
           prefix: test
           masked: true
 
